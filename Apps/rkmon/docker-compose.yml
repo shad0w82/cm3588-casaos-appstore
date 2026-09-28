@@ -76,6 +76,6 @@ x-casaos:
   icon: "https://api.iconify.design/mdi/speedometer.svg?color=%2300ADD8&width=256&height=256"
   thumbnail: ""
   title:
-    en_US: rkmon
+    en_US: RKMon
   category: Utilities
   port_map: "7682"
