@@ -14,6 +14,10 @@ services:
       - GOTTY_AUTH_ENABLED=true
       - GOTTY_AUTH_USER=admin
       - GOTTY_AUTH_PASS=changeme
+      # gotty base path (native $GOTTY_PATH). Set this to the sub-path when
+      # serving behind a reverse proxy (e.g. "/rkmon" for
+      # https://host/rkmon). Use "/" for direct access on the port / the tile.
+      - GOTTY_PATH=/rkmon
     volumes:
       - /proc:/proc
       - /sys:/sys
@@ -32,6 +36,9 @@ services:
         - container: GOTTY_AUTH_PASS
           description:
             en_US: "Web-terminal password (change this!)"
+        - container: GOTTY_PATH
+          description:
+            en_US: "Base path (e.g. /rkmon for a reverse-proxy sub-path; / for direct access)"
       volumes:
         - container: /proc
           description:
