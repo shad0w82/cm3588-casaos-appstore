@@ -1,0 +1,74 @@
+name: rkmon
+services:
+  rkmon:
+    container_name: rkmon
+    # Public image on Docker Hub (built from the rkmon-casaos/ folder).
+    image: shad0w82/rkmon:0.3.1
+    restart: unless-stopped
+    # Privileged + host /proc,/sys,/dev give rkmon full access, including
+    # debugfs (needed for NPU per-core load and RGA load).
+    privileged: true
+    environment:
+      # Web-terminal basic auth. These are shown as editable fields at install
+      # time (see x-casaos.envs). CHANGE the password.
+      - GOTTY_AUTH_ENABLED=true
+      - GOTTY_AUTH_USER=admin
+      - GOTTY_AUTH_PASS=changeme
+    volumes:
+      - /proc:/proc
+      - /sys:/sys
+      - /dev:/dev
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "7682:7681"
+    x-casaos:
+      envs:
+        - container: GOTTY_AUTH_ENABLED
+          description:
+            en_US: "Enable web-terminal basic auth (true/false)"
+        - container: GOTTY_AUTH_USER
+          description:
+            en_US: "Web-terminal username"
+        - container: GOTTY_AUTH_PASS
+          description:
+            en_US: "Web-terminal password (change this!)"
+      volumes:
+        - container: /proc
+          description:
+            en_US: "Host /proc (system metrics)"
+        - container: /sys
+          description:
+            en_US: "Host /sys (devfreq, thermal, debugfs for NPU/RGA)"
+        - container: /dev
+          description:
+            en_US: "Host /dev"
+        - container: /etc/localtime
+          description:
+            en_US: "Host localtime (read-only)"
+      ports:
+        - container: "7681"
+          description:
+            en_US: "Web terminal (gotty)"
+
+x-casaos:
+  architectures:
+    - arm64
+  id: io.github.isac322.rkmon
+  main: rkmon
+  description:
+    en_US: >
+      Real-time hardware monitor TUI for Rockchip RK3588 SBCs (CM3588, Rock 5,
+      Orange Pi 5, etc.), served in the browser via gotty. Shows per-core CPU,
+      Mali GPU, RKNPU (per-core, root), Rockchip VPU (encode/decode), RGA 2D
+      engine, DDR controller and thermal zones. Monitor by isac322
+      (https://github.com/isac322/rkmon); packaged for CasaOS.
+  tagline:
+    en_US: RK3588 accelerator & thermal monitor (GPU/NPU/VPU/RGA/DDR)
+  developer: isac322
+  author: shad0w
+  icon: "https://api.iconify.design/mdi/speedometer.svg?color=%2300ADD8&width=256&height=256"
+  thumbnail: ""
+  title:
+    en_US: rkmon
+  category: Utilities
+  port_map: "7682"
