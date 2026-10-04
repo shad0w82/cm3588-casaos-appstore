@@ -121,8 +121,9 @@ refuses to push it:
 | `cannot reach the Docker daemon` | Docker is not running, or the user is not in the `docker` group. |
 | `denied` / `unauthorized` while pushing | Run `docker login -u shad0w82` again with a valid token. |
 
-## Relation to the app repository's own Dockerfile
+## Relation to the app repository
 
-The app repository also has a `Dockerfile` that compiles everything from source (`docker compose up --build`),
-for people who build it themselves. This one only packages a released binary. They share the runtime part
-(Alpine, `smartmontools`, the binary as entrypoint); keep them in step if one changes.
+The app repository's `docker-compose.yml` runs the same image (`image: shad0w82/rktopng:<version>`), so people who
+use the app without CasaOS get exactly what is built here. There is no Dockerfile there that compiles from source:
+development uses Go and Node locally (`make test`, `make dev`, `make build-arm64`), and the image is made only from
+a release. Once the image is published, update the version in that compose together with this store's compose.
