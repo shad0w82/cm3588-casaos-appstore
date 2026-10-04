@@ -1,0 +1,107 @@
+name: rktopng
+services:
+  rktopng:
+    container_name: rktopng
+    # Public image on Docker Hub, made by Apps/rktopng/docker/build.sh from the binary of the GitHub
+    # release v0.1.0 of shad0w82/rktopng (arm64 only: the app is made for the RK3588). The version is
+    # pinned on purpose, see docker/README.md before changing it.
+    image: shad0w82/rktopng:0.1.0
+    restart: unless-stopped
+    # Root + privileged: needed for the data only root can read (NPU and RGA load in debugfs, and
+    # S.M.A.R.T. from the disks in /dev). Without it the dashboard still works, minus those.
+    privileged: true
+    user: "0:0"
+    environment:
+      # Optional login. Set BOTH to ask for a user and password on EVERYTHING, /metrics included;
+      # leave both empty for an open dashboard. Setting only one stops the app from starting.
+      - RKTOP_AUTH_USER=
+      - RKTOP_AUTH_PASSWORD=
+      # Sub-path, only behind a reverse proxy that keeps the prefix in the address (e.g. an Nginx
+      # Proxy Manager location /rktopng). Leave empty for direct access on the port or the tile.
+      - RKTOP_BASE_PATH=
+      # Where the host's files are mounted below: do not change.
+      - RKTOP_PROC_PATH=/host/proc
+      - RKTOP_SYS_PATH=/host/sys
+      - RKTOP_ROOTFS_PATH=/host/root
+      - RKTOP_OSRELEASE_PATH=/host/os-release
+      - RKTOP_PASSWD_PATH=/host/passwd
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/host/root:ro
+      - /etc/os-release:/host/os-release:ro
+      - /etc/passwd:/host/passwd:ro
+    ports:
+      - "9888:9888"
+    x-casaos:
+      envs:
+        - container: RKTOP_AUTH_USER
+          description:
+            en_US: "Login user (optional). Set it together with the password, or leave both empty"
+        - container: RKTOP_AUTH_PASSWORD
+          description:
+            en_US: "Login password (optional). It protects everything, /metrics included. Leave empty for no login"
+        - container: RKTOP_BASE_PATH
+          description:
+            en_US: "Sub-path behind a reverse proxy that keeps it (e.g. /rktopng). Leave empty for direct access"
+        - container: RKTOP_PROC_PATH
+          description:
+            en_US: "Where the host /proc is mounted (do not change)"
+        - container: RKTOP_SYS_PATH
+          description:
+            en_US: "Where the host /sys is mounted (do not change)"
+        - container: RKTOP_ROOTFS_PATH
+          description:
+            en_US: "Where the host root is mounted, for disk usage (do not change)"
+        - container: RKTOP_OSRELEASE_PATH
+          description:
+            en_US: "Where the host os-release is mounted (do not change)"
+        - container: RKTOP_PASSWD_PATH
+          description:
+            en_US: "Where the host passwd is mounted, to name process owners (do not change)"
+      volumes:
+        - container: /host/proc
+          description:
+            en_US: "Host /proc, read-only (CPU, memory, processes, network)"
+        - container: /host/sys
+          description:
+            en_US: "Host /sys, read-only (temperatures, frequencies, GPU, NPU, VPU, power, disks)"
+        - container: /host/root
+          description:
+            en_US: "Host root, read-only (disk usage of the mounted volumes)"
+        - container: /host/os-release
+          description:
+            en_US: "Host os-release, read-only (the OS name)"
+        - container: /host/passwd
+          description:
+            en_US: "Host passwd, read-only (user names of the processes)"
+      ports:
+        - container: "9888"
+          description:
+            en_US: "Dashboard and API (/metrics for Prometheus)"
+
+x-casaos:
+  architectures:
+    - arm64
+  id: io.github.shad0w82.rktopng
+  main: rktopng
+  description:
+    en_US: >
+      Real-time monitoring dashboard for the FriendlyElec CM3588 and other Rockchip RK3588 boards:
+      CPU per core, temperatures, GPU, NPU, VPU, RGA, DDR, memory, power input, network, processes,
+      and storage with a per-disk S.M.A.R.T. report. The same data is available as a Prometheus
+      exporter at /metrics. It runs privileged with the host's /proc, /sys and root mounted
+      read-only, to read the hardware. Optional login and sub-path for a reverse proxy are in the
+      environment settings. Arm64 only.
+  tagline:
+    en_US: "RK3588 / CM3588 monitor: CPU, NPU, VPU, GPU, storage, S.M.A.R.T."
+  developer: shad0w82
+  author: shad0w82
+  icon: https://raw.githubusercontent.com/shad0w82/cm3588-casaos-appstore/main/Apps/rktopng/icon.png
+  thumbnail: ""
+  tips: {}
+  title:
+    en_US: RkTopNG
+  category: Utilities
+  index: /
+  port_map: "9888"
