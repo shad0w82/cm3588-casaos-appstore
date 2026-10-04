@@ -2,7 +2,7 @@
 
 Everything needed to build and publish the image that `Apps/rktopng/docker-compose.yml` runs:
 `shad0w82/rktopng` on Docker Hub. The app itself lives in
-[shad0w82/rktopng](https://github.com/shad0w82/rktopng). The image is **not compiled here**: it is made
+[shad0w82/cm3588-rktopng](https://github.com/shad0w82/cm3588-rktopng). The image is **not compiled here**: it is made
 from the binary attached to a GitHub release of the app, so the image and the release stay tied together.
 The app is made for the RK3588, so the image is **arm64 only**.
 
@@ -53,7 +53,7 @@ docker login -u shad0w82      # use a Docker Hub access token (Read & Write), no
 
 The order matters: the compose is updated **last**, when the image is already on Docker Hub.
 
-1. **On the Mac, in the app repository (`rktopng`)**: test, commit, tag, then build and publish the release.
+1. **On the Mac, in the app repository (`cm3588-rktopng`)**: test, commit, tag, then build and publish the release.
 
    ```bash
    git tag v0.1.1 && git push origin main v0.1.1

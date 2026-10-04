@@ -5,7 +5,7 @@
 #   ./build.sh --binary <file> [--dry-run]      test build from a local binary; tagged :dev, never pushed
 #
 # shad0w82/rktopng:<version> contains, byte for byte, the binary attached to the release v<version> of
-# https://github.com/shad0w82/rktopng: the script downloads it together with the release's SHA256SUMS,
+# https://github.com/shad0w82/cm3588-rktopng: the script downloads it together with the release's SHA256SUMS,
 # checks the checksum and puts it in a minimal Alpine image (see the Dockerfile next to this script).
 # Nothing is compiled here. Nothing is sent to Docker Hub unless --push is given, and a version that
 # is already on Docker Hub is never overwritten. --dry-run does every check, downloads included, but
@@ -17,9 +17,9 @@
 
 set -euo pipefail
 
-RELEASE_BASE="${RELEASE_BASE:-https://github.com/shad0w82/rktopng/releases/download}"
-REPO_URL="${REPO_URL:-https://github.com/shad0w82/rktopng.git}"
-SOURCE_URL="https://github.com/shad0w82/rktopng"
+RELEASE_BASE="${RELEASE_BASE:-https://github.com/shad0w82/cm3588-rktopng/releases/download}"
+REPO_URL="${REPO_URL:-https://github.com/shad0w82/cm3588-rktopng.git}"
+SOURCE_URL="https://github.com/shad0w82/cm3588-rktopng"
 IMAGE="${IMAGE:-shad0w82/rktopng}"
 PLATFORM="linux/arm64"
 ASSET="rktopng-linux-arm64"
