@@ -8,8 +8,13 @@ Add it once in CasaOS and every app under `Apps/` becomes one-click installable.
 ```
 Apps/
 ├── rkmon/
-│   └── docker-compose.yml   # RK3588 hardware monitor (isac322/rkmon) via gotty
-│                            # image: shad0w82/rkmon:0.3.1
+│   ├── docker-compose.yml   # RK3588 hardware monitor (isac322/rkmon) via gotty
+│   │                        # image: shad0w82/rkmon:0.3.1
+│   └── docker/              # how that image is built and published (not read by CasaOS)
+│       ├── Dockerfile
+│       ├── entrypoint.sh
+│       ├── build.sh
+│       └── README.md
 └── rktopng/
     ├── docker-compose.yml   # RkTopNG: web dashboard + Prometheus exporter for the RK3588
     │                        # image: shad0w82/rktopng:0.1.0
@@ -44,10 +49,10 @@ Add more apps later by creating `Apps/<app>/docker-compose.yml` (with an
 
 - Apps here target **arm64 / RK3588** (`x-casaos.architectures: [arm64]`).
 - Each app's image must be published to a **public registry** (CasaOS pulls it;
-  it can't build locally). Build/push instructions live with each app's source
-  (e.g. rkmon is built from the `rkmon-casaos/` folder in the parent project;
-  rktopng is built from the binary of a GitHub release by
-  [`Apps/rktopng/docker/build.sh`](Apps/rktopng/docker/README.md)).
+  it can't build locally). Each app keeps what builds its image in a `docker/` folder next to its compose,
+  with a `build.sh` that makes the image from a release and refuses to overwrite a published version:
+  [`Apps/rkmon/docker/`](Apps/rkmon/docker/README.md) (from the rkmon release) and
+  [`Apps/rktopng/docker/`](Apps/rktopng/docker/README.md) (from a RkTopNG release).
 
 ## Adding a new app (checklist)
 

@@ -2,7 +2,8 @@ name: rkmon
 services:
   rkmon:
     container_name: rkmon
-    # Public image on Docker Hub (built from the rkmon-casaos/ folder).
+    # Public image on Docker Hub, built by Apps/rkmon/docker/build.sh from the binary of the rkmon
+    # release (see docker/README.md).
     image: shad0w82/rkmon:0.3.1
     restart: unless-stopped
     # Privileged + host /proc,/sys,/dev give rkmon full access, including
