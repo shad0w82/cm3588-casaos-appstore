@@ -74,7 +74,7 @@ x-casaos:
     en_US: RK3588 accelerator & thermal monitor (GPU/NPU/VPU/RGA/DDR)
   developer: isac322
   author: shad0w
-  icon: "https://api.iconify.design/mdi/speedometer.svg?color=%2300ADD8&width=256&height=256"
+  icon: https://raw.githubusercontent.com/shad0w82/cm3588-casaos-appstore/main/Apps/rkmon/icon.png
   thumbnail: ""
   title:
     en_US: RKMon
