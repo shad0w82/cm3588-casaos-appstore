@@ -9,7 +9,7 @@ Add it once in CasaOS and every app under `Apps/` becomes one-click installable.
 Apps/
 ├── rkmon/
 │   ├── docker-compose.yml   # RK3588 hardware monitor (isac322/rkmon) via gotty
-│   │                        # image: shad0w82/rkmon:0.3.1
+│   │                        # image: shad0w82/rkmon:0.4.0
 │   └── docker/              # how that image is built and published (not read by CasaOS)
 │       ├── Dockerfile
 │       ├── entrypoint.sh
@@ -42,7 +42,7 @@ Add more apps later by creating `Apps/<app>/docker-compose.yml` (with an
 
 | App | Image | Notes |
 |-----|-------|-------|
-| **rkmon** | `shad0w82/rkmon:0.3.1` | arm64 only; `privileged` + host `/proc`,`/sys`,`/dev` (NPU/RGA debugfs). Web terminal on port **7682**, auth fields editable at install. |
+| **rkmon** | `shad0w82/rkmon:0.4.0` | arm64 only; `privileged` + host `/proc`,`/sys`,`/dev` (NPU/RGA debugfs). Web terminal on port **7682**, auth fields editable at install. |
 | **rktopng** | `shad0w82/rktopng:0.1.0` | arm64 only; `privileged` + host `/proc`,`/sys`,`/` mounted read-only. Dashboard and Prometheus `/metrics` on port **9888**. Optional login (user + password, both or neither; it protects `/metrics` too) and sub-path for a reverse proxy, both empty by default and editable at install. Source: [shad0w82/rktopng](https://github.com/shad0w82/rktopng). |
 
 ## Requirements

@@ -19,16 +19,16 @@ Apps/rkmon/docker/
 ## How the image is tied to its sources
 
 ```
-rkmon release v0.3.1  ──►  rkmon_0.3.1_linux_arm64.tar.gz + checksums.txt  ──►  image shad0w82/rkmon:0.3.1
- (isac322/rkmon)             (downloaded and checked by build.sh)                (build.sh 0.3.1)
+rkmon release v0.4.0  ──►  rkmon_0.4.0_linux_arm64.tar.gz + checksums.txt  ──►  image shad0w82/rkmon:0.4.0
+ (isac322/rkmon)             (downloaded and checked by build.sh)                (build.sh 0.4.0)
 ```
 
-`./build.sh 0.3.1` downloads the arm64 tarball and `checksums.txt` of the rkmon release `v0.3.1`, **stops if the
+`./build.sh 0.4.0` downloads the arm64 tarball and `checksums.txt` of the rkmon release `v0.4.0`, **stops if the
 checksum does not match**, and puts that exact binary (and its license) in the image. The image records where
 everything came from:
 
 ```bash
-docker inspect --format '{{ json .Config.Labels }}' shad0w82/rkmon:0.3.1 | tr ',' '\n' | grep io.github
+docker inspect --format '{{ json .Config.Labels }}' shad0w82/rkmon:0.4.0 | tr ',' '\n' | grep io.github
 # release            the rkmon version
 # release-sha256     the checksum of the rkmon tarball
 # gotty              the gotty version and the exact commit it was compiled from
@@ -37,13 +37,14 @@ docker inspect --format '{{ json .Config.Labels }}' shad0w82/rkmon:0.3.1 | tr ',
 
 Versions:
 
-- The image tag is the rkmon release: `0.3.1`. When **only the packaging** changes (Dockerfile, `entrypoint.sh`,
-  gotty, the base image), release it as `0.3.1-2`, then `0.3.1-3`, and so on. The part before the dash is the rkmon
+- The image tag is the rkmon release: `0.4.0`. When **only the packaging** changes (Dockerfile, `entrypoint.sh`,
+  gotty, the base image), release it as `0.4.0-2`, then `0.4.0-3`, and so on. The part before the dash is the rkmon
   release to download; the first packaging of a release has no suffix.
 - **A published version is never overwritten.** `build.sh` refuses to push a tag that is already on Docker Hub.
-- The compose always names one version (`image: shad0w82/rkmon:0.3.1`), never `latest`, so what runs is known.
-- `0.3.1` and `latest` on Docker Hub were built and pushed by hand before this script existed, from the same
-  recipe. They stay as they are (`./build.sh 0.3.1 --push` is refused) and the script never touches `latest`.
+- The compose always names one version (`image: shad0w82/rkmon:0.4.0`), never `latest`, so what runs is known.
+- `0.3.1` was built and pushed by hand before this script existed, from the same recipe, and stays as it is
+  (`./build.sh 0.3.1 --push` is refused). `0.4.0` is the first image made by this script. There is no `latest`
+  tag on Docker Hub and the script never creates one.
 
 Why gotty is compiled and not downloaded: the prebuilt gotty v1.8.0 breaks WebSocket basic-auth, v1.7.2 does not.
 The build also gives the login a unique realm (`rkmon`), so a browser does not mix this login up with another gotty
@@ -71,7 +72,7 @@ The order matters: the compose is updated **last**, when the image is already on
    ```bash
    cd ~/cm3588-casaos-appstore && git pull
    cd Apps/rkmon/docker
-   ./build.sh 0.4.0                # build only, nothing is pushed (use 0.3.1-2 for a packaging revision)
+   ./build.sh 0.4.0                # build only, nothing is pushed (use 0.4.0-2 for a packaging revision)
    # ... test the image (next section) ...
    ./build.sh 0.4.0 --push         # same build, then push to Docker Hub
    ```
