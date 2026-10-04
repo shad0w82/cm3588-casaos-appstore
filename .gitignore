@@ -1,0 +1,8 @@
+# macOS / editors
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Local files from testing the image build
+*.log
